@@ -1,3 +1,3 @@
 #!/bin/zsh
 
-cargo run --release > image.ppm && sxiv -sf -f image.ppm
+cargo run --release && sxiv -sf -f image.ppm
