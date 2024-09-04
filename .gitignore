@@ -14,5 +14,9 @@ Cargo.lock
 # MSVC Windows builds of rustc generate these, which store debugging information
 *.pdb
 
-# Ignore CLion metadata
+# CLion metadata
 .idea
+
+# Images generated
+*.ppm
+*.png
