@@ -3,14 +3,13 @@ mod vec3;
 use std::fs::File;
 use std::io;
 use std::io::Write;
+use image::ImageBuffer;
 
 fn main() -> std::io::Result<()> {
     let image_width = 256;
     let image_height = 256;
 
-    let mut output = File::create("image.ppm")?;
-
-    output.write_fmt(format_args!("P3\n{} {}\n255\n", image_width, image_height))?;
+    let mut imgbuf = ImageBuffer::new(image_width, image_height);
 
     for j in 0..image_height {
         print!("\rScanlines remaining: {} ", image_height - j);
@@ -20,13 +19,16 @@ fn main() -> std::io::Result<()> {
             let g = j as f64 / (image_height-1) as f64;
             let b = 0.0;
 
-            let ir = (255.999*r) as i32;
-            let ig = (255.999*g) as i32;
-            let ib = (255.999*b) as i32;
+            let ir = (255.999*r) as u8;
+            let ig = (255.999*g) as u8;
+            let ib = (255.999*b) as u8;
 
-            output.write_fmt(format_args!("{} {} {}\n", ir,ig,ib))?;
+            let pixel = imgbuf.get_pixel_mut(i,j);
+            *pixel = image::Rgb([ir,ig,ib]);
         }
     }
+    imgbuf.save("image.png").unwrap();
+
     print!("\rDone.                 \n");
 
     Ok(())
